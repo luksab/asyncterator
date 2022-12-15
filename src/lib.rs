@@ -55,7 +55,10 @@ where
         // wait for messages on thead_receiver
         for _ in thead_receiver {
             let item = inner.next();
-            thead_sender.send(item).unwrap();
+            let res = thead_sender.send(item);
+            if res.is_err() {
+                break;
+            }
         }
         inner
     });
