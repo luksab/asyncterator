@@ -18,9 +18,8 @@ where
 
 impl<'a, T> Asyncterator<'a, T>
 where
-    T: Iterator + std::marker::Send + 'static,
+    T: Iterator + std::marker::Send + 'a,
     <T as std::iter::Iterator>::Item: std::marker::Send,
-    <T as std::iter::Iterator>::Item: 'static,
 {
     /// Create a new Asyncterator
     pub fn new(inner: T, scope: &'a Scope<'a, '_>) -> Self {
@@ -46,9 +45,8 @@ fn spaw_thread<'a, T>(
     std::sync::mpsc::Sender<()>,
 )
 where
-    T: Iterator + std::marker::Send + 'static,
+    T: Iterator + std::marker::Send + 'a,
     <T as std::iter::Iterator>::Item: std::marker::Send,
-    <T as std::iter::Iterator>::Item: 'static,
 {
     let (main_sender, thead_receiver) = std::sync::mpsc::channel();
     let (thead_sender, main_receiver) = std::sync::mpsc::channel();
