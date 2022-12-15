@@ -1,5 +1,7 @@
 use std::thread::{Scope, ScopedJoinHandle};
 
+use log::debug;
+
 /// A Asyncterator of type T
 ///
 /// The Asyncterator is a wrapper around an Iterator of type T.
@@ -75,7 +77,10 @@ where
 
     fn next(&mut self) -> Option<Self::Item> {
         self.sender.send(()).unwrap();
-        self.receiver.recv().unwrap()
+        let now = std::time::Instant::now();
+        let res = self.receiver.recv().unwrap();
+        debug!("get next time: {:?}", now.elapsed());
+        res
     }
 }
 
